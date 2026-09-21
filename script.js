@@ -1,3 +1,4 @@
+
 // MOBILE MENU
 
 const menuToggle = document.getElementById("menuToggle");
@@ -29,51 +30,40 @@ navLinks.forEach(function(link) {
 
 const contactForm = document.getElementById("contactForm");
 const formMessage = document.getElementById("formMessage");
+if (contactForm){
 
 contactForm.addEventListener("submit", function(event) {
 
-    event.preventDefault();
+
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
     const phone = document.getElementById("phone").value.trim();
     const message = document.getElementById("message").value.trim();
 
-
-    if (name === "") {
-
-        formMessage.textContent = "Please enter your full name.";
-        return;
-
-    }
-
-
-    if (email === "") {
-
-        formMessage.textContent = "Please enter your email address.";
-        return;
-
-    }
-
-
     const emailPattern =
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
-    if (!emailPattern.test(email)) {
+    if (name.length<2) {
+        event.preventDefault();
+        alert("Please enter your full name.");
+        return;
 
-        formMessage.textContent =
-            "Please enter a valid email address.";
+    }
+
+    if (!emailPattern.test(email)) {
+        event.preventDefault();
+alert( "Please enter a valid email address.");
 
         return;
 
     }
 
 
-    if (phone === "") {
-
-        formMessage.textContent =
-            "Please enter your phone number.";
+    if (phone.length<7) {
+        event.preventDefault();
+alert( "Please enter your phone number.");
 
         return;
 
@@ -81,9 +71,8 @@ contactForm.addEventListener("submit", function(event) {
 
 
     if (message.length < 10) {
-
-        formMessage.textContent =
-            "Please enter a message of at least 10 characters.";
+        event.preventDefault();
+alert("Please enter a message of at least 10 characters.");
 
         return;
 
@@ -95,4 +84,38 @@ contactForm.addEventListener("submit", function(event) {
 
     contactForm.reset();
 
-});
+})};
+
+// ===== Image slider =====
+(function () {
+  const slides = document.querySelector('.slides');
+  const dotsBox = document.querySelector('.dots');
+  if (!slides || !dotsBox) return; // stops errors on pages without a slider
+
+  const total = slides.children.length;
+  let index = 0;
+
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('span');
+    d.className = 'dot';
+    d.onclick = () => showSlide(i);
+    dotsBox.appendChild(d);
+  }
+
+  function showSlide(i) {
+    index = (i + total) % total;
+    slides.style.transform = `translateX(-${index * 100}%)`;
+    document.querySelectorAll('.dot').forEach((d, n) => d.classList.toggle('active', n === index));
+  }
+
+  function moveSlide(step) {
+    showSlide(index + step);
+  }
+
+  showSlide(0);
+  setInterval(() => moveSlide(1), 4000);
+
+  document.getElementById('prevBtn').onclick = () => moveSlide(-1);
+  document.getElementById('nextBtn').onclick = () => moveSlide(1);
+})();
+
